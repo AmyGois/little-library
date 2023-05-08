@@ -13,6 +13,10 @@
     --light-font-colour: #fff;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 /********************************************
 2. Page layout & typography
 ********************************************/
@@ -69,8 +73,61 @@ h1 {
 
 .cards {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+}
+
+.card {
+    max-width: 260px;
+    padding: 20px;
+    background-color: var(--secondary-background-colour);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card p {
+    margin: 0;
+}
+
+.card p:first-child {
+    font-weight: 600;
+}
+
+.card-buttons {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.card-readBtn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    align-self: flex-start;
+}
+
+.status-read {
+    background-color: var(--primary-colour);
+    color: var(--light-font-colour);    
+}
+
+.status-read:active {
+    background-color: var(--primary-colour-variant);
+}
+
+.status-unread {
+    background-color: var(--secondary-colour);
+}
+
+.status-unread:active {
+    background-color: var(--secondary-colour-variant);
+}
+
+.card-buttons img {
+    max-height: 2rem;
 }
 
 /********************************************
