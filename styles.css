@@ -1,3 +1,153 @@
-.new-book-form {
+/********************************************
+1. Custom & universal properties
+********************************************/
+
+:root {
+    --primary-colour: #2b9f95;
+    --secondary-colour: #f6f288;
+    --primary-colour-variant: #027168;
+    --secondary-colour-variant: #e8e351;
+    --primary-background-colour: #fefefe;
+    --secondary-background-colour: #ddd;
+    --dark-font-colour: #000;
+    --light-font-colour: #fff;
+}
+
+/********************************************
+2. Page layout & typography
+********************************************/
+
+body, button, input {
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header, main, footer {
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 {
+    margin: 30px 0 20px 0;
+}
+
+/********************************************
+3. Searchbar, filters & "Add Book" button
+********************************************/
+
+.search-and-add {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-colour);
+}
+
+.addBtn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--secondary-colour);
+}
+
+.addBtn:active {
+    background-color: var(--secondary-colour-variant);
+}
+
+/********************************************
+4. Book cards section
+********************************************/
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/********************************************
+5. Footer
+********************************************/
+
+footer {
+    margin-top: auto;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/********************************************
+6. "Add Book" modal
+********************************************/
+
+.modal {
     display: none;
+}
+
+.modal.modal-active {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.new-book-form {
+    background-color: var(--secondary-background-colour);
+    padding: 15px 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.new-book-form h2 {
+    margin: 0;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.form-input input {
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.form-submit {
+    align-self: flex-end;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-colour);
+    color: var(--light-font-colour);
+}
+
+.form-submit:active {
+    background-color: var(--primary-colour-variant);
+}
+
+.form-input input, .form-submit {
+    border-radius: 5px;
+    border: none;
 }

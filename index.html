@@ -5,9 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Little Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,600;1,200;1,400;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
     <script src="./script.js" defer></script>
 </head>
+
 <body>
     <header>
         <h1>My Library</h1>
@@ -15,59 +19,59 @@
 
     <main>
         <div class="search-and-add">
-            <!--Add searchbar and filters here-->
+            <div>search bar and filters here</div>
 
-            <button>+ Add Book</button>
+            <button class="addBtn">+ Add Book</button>
         </div>
 
         <div class="cards">
             <!--Book cards generated here with Javascript-->
+            <div>asdf</div>
+            <div>asdf</div>
+            <div>asdf</div>
+            <div>asdf</div>
+            <div>asdf</div>
         </div>
     </main>
-
-    <div class="new-book-form"> <!--Set to display: none-->
-        <h2>New Book</h2>
-
-        <div class="form-input">
-            <label for="new-book-title">Title:</label>
-            <input type="text" name="new-book-title" id="new-book-title" placeholder="" required>
-        </div>
-
-        <div class="form-input">
-            <label for="new-book-author">Author:</label>
-            <input type="text" name="new-book-author" id="new-book-author" placeholder="" required>
-        </div>
-
-        <div class="form-input">
-            <label for="new-book-year">Year of publication:</label>
-            <input type="number" name="new-book-year" id="new-book-year" placeholder="" required>
-        </div>
-
-        <div class="form-input">
-            <label for="new-book-edition">Edition:</label>
-            <input type="number" name="new-book-edition" id="new-book-edition" placeholder="" required>
-        </div>
-
-        <div class="form-input">
-            <label for="new-book-publisher">Publisher:</label>
-            <input type="text" name="new-book-publisher" id="new-book-publisher" placeholder="" required>
-        </div>
-
-        <div class="form-input">
-            <label for="new-book-pages">Number of pages (optional):</label>
-            <input type="number" name="new-book-pages" id="new-book-pages" placeholder="">
-        </div>
-
-        <div class="form-input-checkbox">
-            <input type="checkbox" name="new-book-read" id="new-book-read" required>
-            <label for="new-book-read">I have already read this book</label>
-        </div>
-
-        <button>Add Book</button>
-    </div>
 
     <footer>
         <span>Created by Amy Gois</span>
     </footer>
+
+    <div class="modal">
+        <div class="new-book-form"> <!--Display: none-->
+            <button class="modal-close">X</button>
+            <h2>New Book</h2>
+            <div class="form-input">
+                <label for="new-book-title">Title:</label>
+                <input type="text" name="new-book-title" id="new-book-title" placeholder="" required>
+            </div>
+            <div class="form-input">
+                <label for="new-book-author">Author:</label>
+                <input type="text" name="new-book-author" id="new-book-author" placeholder="" required>
+            </div>
+            <div class="form-input">
+                <label for="new-book-year">Year of publication:</label>
+                <input type="number" name="new-book-year" id="new-book-year" placeholder="" required>
+            </div>
+            <div class="form-input">
+                <label for="new-book-edition">Edition:</label>
+                <input type="number" name="new-book-edition" id="new-book-edition" placeholder="" required>
+            </div>
+            <div class="form-input">
+                <label for="new-book-publisher">Publisher:</label>
+                <input type="text" name="new-book-publisher" id="new-book-publisher" placeholder="" required>
+            </div>
+            <div class="form-input">
+                <label for="new-book-pages">Number of pages (optional):</label>
+                <input type="number" name="new-book-pages" id="new-book-pages" placeholder="">
+            </div>
+            <div class="form-input-checkbox">
+                <input type="checkbox" name="new-book-read" id="new-book-read" required>
+                <label for="new-book-read">I have already read this book</label>
+            </div>
+            <button class="form-submit">Add Book</button>
+        </div>
+    </div>
 </body>
 </html>
