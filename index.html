@@ -21,7 +21,7 @@
         <div class="search-and-add">
             <div>search bar and filters here</div>
 
-            <button class="addBtn">+ Add Book</button>
+            <button class="addBtn" id="addBtn">+ Add Book</button>
         </div>
 
         <div class="cards">
@@ -50,43 +50,45 @@
         <span>Created by Amy Gois</span>
     </footer>
 
-    <div class="new-book-modal">
-        <div class="new-book-form"> <!--Display: none-->
-            <button class="modal-close">X</button>
+    <div class="new-book-modal modal-inactive" id="new-book-modal"> <!--Display: none-->
+        <div class="new-book-card">
+            <button class="new-book-modal-close" id="new-book-modal-close">X</button>
             <h2>New Book</h2>
-            <div class="form-input">
-                <label for="new-book-title">Title:</label>
-                <input type="text" name="new-book-title" id="new-book-title" placeholder="" required>
-            </div>
-            <div class="form-input">
-                <label for="new-book-author">Author:</label>
-                <input type="text" name="new-book-author" id="new-book-author" placeholder="" required>
-            </div>
-            <div class="form-input">
-                <label for="new-book-year">Year of publication:</label>
-                <input type="number" name="new-book-year" id="new-book-year" placeholder="" required>
-            </div>
-            <div class="form-input">
-                <label for="new-book-edition">Edition:</label>
-                <input type="number" name="new-book-edition" id="new-book-edition" placeholder="" required>
-            </div>
-            <div class="form-input">
-                <label for="new-book-publisher">Publisher:</label>
-                <input type="text" name="new-book-publisher" id="new-book-publisher" placeholder="" required>
-            </div>
-            <div class="form-input">
-                <label for="new-book-pages">Number of pages (optional):</label>
-                <input type="number" name="new-book-pages" id="new-book-pages" placeholder="">
-            </div>
-            <div class="form-input-checkbox">
-                <input type="checkbox" name="new-book-read" id="new-book-read" required>
-                <label for="new-book-read">I have already read this book</label>
-            </div>
-            <button class="form-submit">Add Book</button>
+            <form action="#" class="new-book-form">
+                <div class="form-input">
+                    <label for="new-book-title">Title:</label>
+                    <input type="text" name="new-book-title" id="new-book-title" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="new-book-author">Author:</label>
+                    <input type="text" name="new-book-author" id="new-book-author" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="new-book-year">Year of publication:</label>
+                    <input type="number" name="new-book-year" id="new-book-year" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="new-book-edition">Edition:</label>
+                    <input type="number" name="new-book-edition" id="new-book-edition" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="new-book-publisher">Publisher:</label>
+                    <input type="text" name="new-book-publisher" id="new-book-publisher" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="new-book-pages">Number of pages (optional):</label>
+                    <input type="number" name="new-book-pages" id="new-book-pages" placeholder="">
+                </div>
+                <div class="form-input-checkbox">
+                    <input type="checkbox" name="new-book-read" id="new-book-read">
+                    <label for="new-book-read">I have already read this book</label>
+                </div>
+                <button class="form-submit" id="form-submit">Add Book</button>
+            </form>
         </div>
     </div>
 
-    <div class="confirm-delete-modal modal-inactive">
+    <div class="confirm-delete-modal modal-inactive"> <!--Display: none-->
         <div class="confirm-delete-card">
             <p>Are you sure you want to delete this book from the library?</p>
             <div class="confirm-delete-buttons">

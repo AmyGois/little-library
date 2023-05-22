@@ -162,11 +162,11 @@ footer {
 6. "Add Book" modal
 ********************************************/
 
-.new-book-modal {
+.new-book-modal.modal-inactive {
     display: none;
 }
 
-.new-book-modal.modal-active {
+.new-book-modal {
     position: fixed;
     height: 100vh;
     width: 100vw;
@@ -176,7 +176,7 @@ footer {
     justify-content: center;
 }
 
-.new-book-form {
+.new-book-card {
     background-color: var(--secondary-background-colour);
     padding: 15px 30px;
     border-radius: 10px;
@@ -186,7 +186,7 @@ footer {
     position: relative;
 }
 
-.modal-close {
+.new-book-modal-close {
     position: absolute;
     top: 15px;
     right: 30px;
@@ -196,8 +196,14 @@ footer {
     font-size: 1rem;
 }
 
-.new-book-form h2 {
+.new-book-card h2 {
     margin: 0;
+}
+
+.new-book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .form-input {
