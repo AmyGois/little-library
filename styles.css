@@ -104,13 +104,20 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    justify-content: space-between;
 }
 
-.card p {
+.card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-text p {
     margin: 0;
 }
 
-.card p:first-child {
+.card-text p:first-child {
     font-weight: 600;
 }
 
@@ -144,7 +151,12 @@ h1 {
     background-color: var(--secondary-colour-variant);
 }
 
-.card-buttons img {
+.card-editBtn, .card-deleteBtn {
+    background: none;
+    border: none;
+}
+
+.card-editBtn img, .card-deleteBtn img {
     max-height: 2rem;
 }
 

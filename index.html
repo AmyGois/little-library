@@ -24,22 +24,24 @@
             <button class="addBtn" id="addBtn">+ Add Book</button>
         </div>
 
-        <div class="cards">
+        <div class="cards" id="cards">
             <!--Book cards generated here with Javascript-->
             <div class="card">
-                <p>Pride and Prejudice</p>
-                <p>Written by Jane Austen</p>
-                <p>Published in 1845</p>
-                <p>5th edition</p>
-                <p>Publisher: Penguin</p>
-                <p>Number of pages: 200</p>
-                <p>Citation (APA7):</p>
-                <p>Austen, J. (1845). <em>Pride and Prejudice</em>. (5th Ed.). Penguin.</p>
+                <div class="card-text">
+                    <p>Pride and Prejudice</p>
+                    <p>Written by Jane Austen</p>
+                    <p>Published in 1845</p>
+                    <p>5th edition</p>
+                    <p>Publisher: Penguin</p>
+                    <p>Number of pages: 200</p>
+                    <p>Citation (APA7):</p>
+                    <p>Austen, J. (1845). <em>Pride and Prejudice</em>. (5th Ed.). Penguin.</p>
+                </div>
                 <div class="card-buttons">
                     <button class="card-readBtn status-read">Read</button>
                     <div>
-                        <img src="./images/edit.svg" alt="edit">
-                        <img src="./images/delete.svg" alt="delete">
+                        <button class="card-editBtn"><img src="./images/edit.svg" alt="edit"></button>
+                        <button class="card-deleteBtn"><img src="./images/delete.svg" alt="delete"></button>
                     </div>
                 </div>
             </div>
