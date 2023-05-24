@@ -1,9 +1,7 @@
 const myLibrary = [];
 const addBtn = document.getElementById('addBtn');
-const closeBookModalBtn = document.getElementById('new-book-modal-close');
-const cards = document.getElementById('cards');
 
-/* Book object constructor */
+/* Book object constructor and prototype */
 function Book(title, author, year, edition, publisher, pages, read) {
   this.title = title;
   this.author = author;
@@ -14,12 +12,66 @@ function Book(title, author, year, edition, publisher, pages, read) {
   this.read = read;
 }
 
-function displayBook(title, author, year, edition, publisher, pages) {
+Book.prototype.sortName = function () {
+  const splitName = this.author.split(' ');
+  const lastName = splitName[splitName.length - 1];
+  let otherNames = '';
+  let sortedName = '';
+  if (splitName.length > 1) {
+    for (i = 0; i < splitName.length - 1; i++) {
+      otherNames += ` ${splitName[i].substr(0, 1)}.`;
+    }
+  }
+  if (otherNames) {
+    sortedName = `${lastName},${otherNames}`;
+  } else {
+    sortedName = lastName;
+  }
+  return sortedName;
+};
+
+Book.prototype.sortEdition = function () {
+  const lastNumber = this.edition.substr(-1, 1);
+  let sortedEdition = '';
+  if (this.edition === '11' || this.edition === '12' || this.edition === '13') {
+    sortedEdition = `${this.edition}th`;
+  } else {
+    switch (lastNumber) {
+      case '1':
+        sortedEdition = `${this.edition}st`;
+        break;
+      case '2':
+        sortedEdition = `${this.edition}nd`;
+        break;
+      case '3':
+        sortedEdition = `${this.edition}rd`;
+        break;
+      default:
+        sortedEdition = `${this.edition}th`;
+    }
+  }
+  return sortedEdition;
+};
+
+/* Display book in DOM */
+function displayBook(
+  title,
+  author,
+  year,
+  sortEdition,
+  publisher,
+  pages,
+  read,
+  sortName
+) {
+  const cards = document.getElementById('cards');
   const card = document.createElement('div');
   card.classList.add('card');
   const cardText = document.createElement('div');
   cardText.classList.add('card-text');
   card.appendChild(cardText);
+
+  /* Create text elements of card */
   const bookTitle = document.createElement('p');
   bookTitle.textContent = `${title}`;
   cardText.appendChild(bookTitle);
@@ -30,7 +82,7 @@ function displayBook(title, author, year, edition, publisher, pages) {
   bookYear.textContent = `Published in ${year}`;
   cardText.appendChild(bookYear);
   const bookEdition = document.createElement('p');
-  bookEdition.textContent = `${edition} edition`;
+  bookEdition.textContent = `${sortEdition} edition`;
   cardText.appendChild(bookEdition);
   const bookPublisher = document.createElement('p');
   bookPublisher.textContent = `Publisher: ${publisher}`;
@@ -44,19 +96,21 @@ function displayBook(title, author, year, edition, publisher, pages) {
   const bookCitationTitle = document.createElement('em');
   bookCitationTitle.textContent = `${title}`;
   const bookCitation = document.createElement('p');
-  bookCitation.textContent = `${author}. (${year}). `;
+  bookCitation.textContent = `${sortName} (${year}). `;
   bookCitation.appendChild(bookCitationTitle);
   const bookCitationRest = document.createTextNode(
-    `. (${edition} Ed.). ${publisher}.`
+    `. (${sortEdition} Ed.). ${publisher}.`
   );
   bookCitation.appendChild(bookCitationRest);
   cardText.appendChild(bookCitation);
+
+  /* Create buttons for card */
   const cardButtons = document.createElement('div');
   cardButtons.classList.add('card-buttons');
   card.appendChild(cardButtons);
   const cardReadButton = document.createElement('button');
   cardReadButton.classList.add('card-readBtn');
-  if (this.read) {
+  if (read) {
     cardReadButton.classList.add('status-read');
     cardReadButton.textContent = 'Read';
   } else {
@@ -83,9 +137,8 @@ function displayBook(title, author, year, edition, publisher, pages) {
   cards.appendChild(card);
 }
 
-/* Add a new Book to the myLibrary array */
+/* Add a new Book to the myLibrary array from user input */
 function addBookToLibrary(event) {
-  // Add new book to array from user input
   const newBookTitle = document.getElementById('new-book-title').value;
   const newBookAuthor = document.getElementById('new-book-author').value;
   const newBookYear = document.getElementById('new-book-year').value;
@@ -113,22 +166,23 @@ function addBookToLibrary(event) {
       newBookRead
     );
     myLibrary.push(newBook);
-    console.log(myLibrary);
-    /* Display all books function - change place */
+    /* Display all books function - change place
     myLibrary.forEach((book) =>
       displayBook(
         book.title,
         book.author,
         book.year,
-        book.edition,
+        book.sortEdition(),
         book.publisher,
-        book.pages
+        book.pages,
+        book.read,
+        book.sortName()
       )
-    );
+    ); */
   }
 }
 
-/* Functions for opening and closing modals */
+/* General functions for opening and closing modals */
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   modal.classList.remove('modal-inactive');
@@ -139,12 +193,33 @@ function closeModal(modalId) {
   modal.classList.add('modal-inactive');
 }
 
+/* Add a new book to myLibrary array and to the DOM when the form is submitted and close modal */
+function addNewBook() {
+  addBookToLibrary(event);
+  const newBook = myLibrary[myLibrary.length - 1];
+  displayBook(
+    newBook.title,
+    newBook.author,
+    newBook.year,
+    newBook.sortEdition(),
+    newBook.publisher,
+    newBook.pages,
+    newBook.read,
+    newBook.sortName()
+  );
+  closeModal('new-book-modal');
+}
+
+/* Function to open New Book modal */
 function openNewBookModal(modalId) {
   openModal(modalId);
 
+  const closeBookModalBtn = document.getElementById('new-book-modal-close');
+  closeBookModalBtn.addEventListener('click', () =>
+    closeModal('new-book-modal')
+  );
   const formSubmitBtn = document.getElementById('form-submit');
-  formSubmitBtn.addEventListener('click', addBookToLibrary);
+  formSubmitBtn.addEventListener('click', addNewBook);
 }
 
 addBtn.addEventListener('click', () => openNewBookModal('new-book-modal'));
-closeBookModalBtn.addEventListener('click', () => closeModal('new-book-modal'));
