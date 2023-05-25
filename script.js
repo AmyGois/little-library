@@ -53,6 +53,20 @@ Book.prototype.sortEdition = function () {
   return sortedEdition;
 };
 
+function changeReadStatus() {
+  if (this.classList.contains('status-read')) {
+    this.classList.replace('status-read', 'status-unread');
+    this.textContent = 'Unread';
+    myLibrary[Number(this.dataset.index)].read = false;
+  } else if (this.classList.contains('status-unread')) {
+    this.classList.replace('status-unread', 'status-read');
+    this.textContent = 'Read';
+    myLibrary[Number(this.dataset.index)].read = true;
+  } else {
+    console.log('error');
+  }
+}
+
 /* Display book in DOM */
 function displayBook(
   title,
@@ -66,6 +80,7 @@ function displayBook(
 ) {
   const cards = document.getElementById('cards');
   const card = document.createElement('div');
+  card.dataset.index = `${myLibrary.length - 1}`;
   card.classList.add('card');
   const cardText = document.createElement('div');
   cardText.classList.add('card-text');
@@ -117,11 +132,14 @@ function displayBook(
     cardReadButton.classList.add('status-unread');
     cardReadButton.textContent = 'Unread';
   }
+  cardReadButton.addEventListener('click', changeReadStatus);
+  cardReadButton.dataset.index = `${myLibrary.length - 1}`;
   cardButtons.appendChild(cardReadButton);
   const cardButtonsDiv = document.createElement('div');
   cardButtons.appendChild(cardButtonsDiv);
   const editBtn = document.createElement('button');
   editBtn.classList.add('card-editBtn');
+  editBtn.dataset.index = `${myLibrary.length - 1}`;
   cardButtonsDiv.appendChild(editBtn);
   const editImg = document.createElement('img');
   editImg.setAttribute('src', './images/edit.svg');
@@ -129,6 +147,7 @@ function displayBook(
   editBtn.appendChild(editImg);
   const deleteBtn = document.createElement('button');
   deleteBtn.classList.add('card-deleteBtn');
+  deleteBtn.dataset.index = `${myLibrary.length - 1}`;
   cardButtonsDiv.appendChild(deleteBtn);
   const deleteImg = document.createElement('img');
   deleteImg.setAttribute('src', './images/delete.svg');
@@ -193,7 +212,7 @@ function closeModal(modalId) {
   modal.classList.add('modal-inactive');
 }
 
-/* Add a new book to myLibrary array and to the DOM when the form is submitted and close modal */
+/* Add a new book to myLibrary array and to the DOM when the form is submitted, and close modal */
 function addNewBook() {
   addBookToLibrary(event);
   const newBook = myLibrary[myLibrary.length - 1];
