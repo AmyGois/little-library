@@ -154,6 +154,7 @@ h1 {
 .card-editBtn, .card-deleteBtn {
     background: none;
     border: none;
+    padding: 0;
 }
 
 .card-editBtn img, .card-deleteBtn img {

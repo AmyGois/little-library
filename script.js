@@ -53,6 +53,20 @@ Book.prototype.sortEdition = function () {
   return sortedEdition;
 };
 
+/* Example book */
+const exampleBook = new Book(
+  'Pride and Prejudice',
+  'Jane Austen',
+  '1813',
+  '1',
+  'Penguin',
+  '303',
+  true
+);
+
+myLibrary.push(exampleBook);
+
+/* Change the 'read' status of the book when the 'read/unread' button is clicked */
 function changeReadStatus() {
   if (this.classList.contains('status-read')) {
     this.classList.replace('status-read', 'status-unread');
@@ -148,6 +162,9 @@ function displayBook(
   const deleteBtn = document.createElement('button');
   deleteBtn.classList.add('card-deleteBtn');
   deleteBtn.dataset.index = `${myLibrary.length - 1}`;
+  deleteBtn.addEventListener('click', () =>
+    openConfirmDeleteModal(Number(deleteBtn.dataset.index))
+  );
   cardButtonsDiv.appendChild(deleteBtn);
   const deleteImg = document.createElement('img');
   deleteImg.setAttribute('src', './images/delete.svg');
@@ -185,19 +202,6 @@ function addBookToLibrary(event) {
       newBookRead
     );
     myLibrary.push(newBook);
-    /* Display all books function - change place
-    myLibrary.forEach((book) =>
-      displayBook(
-        book.title,
-        book.author,
-        book.year,
-        book.sortEdition(),
-        book.publisher,
-        book.pages,
-        book.read,
-        book.sortName()
-      )
-    ); */
   }
 }
 
@@ -230,8 +234,8 @@ function addNewBook() {
 }
 
 /* Function to open New Book modal */
-function openNewBookModal(modalId) {
-  openModal(modalId);
+function openNewBookModal() {
+  openModal('new-book-modal');
 
   const closeBookModalBtn = document.getElementById('new-book-modal-close');
   closeBookModalBtn.addEventListener('click', () =>
@@ -241,4 +245,52 @@ function openNewBookModal(modalId) {
   formSubmitBtn.addEventListener('click', addNewBook);
 }
 
-addBtn.addEventListener('click', () => openNewBookModal('new-book-modal'));
+addBtn.addEventListener('click', openNewBookModal);
+
+/* Delete a book from the library */
+function deleteBook(index) {
+  const cardToDelete = document.querySelector(`[data-index="${index}"]`);
+  cardToDelete.remove();
+  const deletedBookFromLibrary = myLibrary.splice(Number(index), 1);
+  const cards = document.getElementById('cards');
+  cards.innerHTML = '';
+  myLibrary.forEach((book) =>
+    displayBook(
+      book.title,
+      book.author,
+      book.year,
+      book.sortEdition(),
+      book.publisher,
+      book.pages,
+      book.read,
+      book.sortName()
+    )
+  );
+  closeModal('confirm-delete-modal');
+}
+
+function openConfirmDeleteModal(index) {
+  openModal('confirm-delete-modal');
+
+  const confirmDeleteText = document.getElementById('confirm-delete-text');
+  const bookName = myLibrary[index].title;
+  confirmDeleteText.textContent = `Are you sure you want to delete ${bookName} from your library?`;
+  const cancelBtn = document.getElementById('cancelBtn');
+  cancelBtn.addEventListener('click', () => closeModal('confirm-delete-modal'));
+  const deleteBtn = document.getElementById('deleteBtn');
+  deleteBtn.addEventListener('click', () => deleteBook(index));
+}
+
+/* Display all books function */
+myLibrary.forEach((book) =>
+  displayBook(
+    book.title,
+    book.author,
+    book.year,
+    book.sortEdition(),
+    book.publisher,
+    book.pages,
+    book.read,
+    book.sortName()
+  )
+);
