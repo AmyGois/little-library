@@ -1,7 +1,25 @@
+/* Contents:
+  0. Global variables
+  1. Book object constructor and prototype
+  2. Example book
+  3. Change the 'read' status of the book when the 'read/unread' button is clicked
+  4. Display book in DOM
+    4.1. Create text elements of card
+    4.2. Create buttons for card
+  5. Add a new Book to the myLibrary array from user input
+  6. General functions for opening and closing modals
+  7. Function to open New Book modal
+  8. Edit book in library
+    8.1. Edit the corresponding book card in the DOM
+  9. Function to open Edit Book modal
+  10. Delete a book from the library
+  11. Display all books function */
+
+/* 0. Global variables */
 const myLibrary = [];
 const addBtn = document.getElementById('addBtn');
 
-/* Book object constructor and prototype */
+/* 1. Book object constructor and prototype */
 function Book(title, author, year, edition, publisher, pages, read) {
   this.title = title;
   this.author = author;
@@ -53,7 +71,7 @@ Book.prototype.sortEdition = function () {
   return sortedEdition;
 };
 
-/* Example book */
+/* 2. Example book */
 const exampleBook = new Book(
   'Pride and Prejudice',
   'Jane Austen',
@@ -66,7 +84,7 @@ const exampleBook = new Book(
 
 myLibrary.push(exampleBook);
 
-/* Change the 'read' status of the book when the 'read/unread' button is clicked */
+/* 3. Change the 'read' status of the book when the 'read/unread' button is clicked */
 function changeReadStatus() {
   if (this.classList.contains('status-read')) {
     this.classList.replace('status-read', 'status-unread');
@@ -76,12 +94,10 @@ function changeReadStatus() {
     this.classList.replace('status-unread', 'status-read');
     this.textContent = 'Read';
     myLibrary[Number(this.dataset.index)].read = true;
-  } else {
-    console.log('error');
   }
 }
 
-/* Display book in DOM */
+/* 4. Display book in DOM */
 function displayBook(
   title,
   author,
@@ -100,7 +116,7 @@ function displayBook(
   cardText.classList.add('card-text');
   card.appendChild(cardText);
 
-  /* Create text elements of card */
+  /* 4.1. Create text elements of card */
   const bookTitle = document.createElement('p');
   bookTitle.textContent = `${title}`;
   cardText.appendChild(bookTitle);
@@ -133,7 +149,7 @@ function displayBook(
   bookCitation.appendChild(bookCitationRest);
   cardText.appendChild(bookCitation);
 
-  /* Create buttons for card */
+  /* 4.2. Create buttons for card */
   const cardButtons = document.createElement('div');
   cardButtons.classList.add('card-buttons');
   card.appendChild(cardButtons);
@@ -176,7 +192,7 @@ function displayBook(
   cards.appendChild(card);
 }
 
-/* Add a new Book to the myLibrary array from user input */
+/* 5. Add a new Book to the myLibrary array from user input */
 function addBookToLibrary(event) {
   const newBookTitle = document.getElementById('new-book-title').value;
   const newBookAuthor = document.getElementById('new-book-author').value;
@@ -220,7 +236,7 @@ function addBookToLibrary(event) {
   }
 }
 
-/* General functions for opening and closing modals */
+/* 6. General functions for opening and closing modals */
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   modal.classList.remove('modal-inactive');
@@ -231,24 +247,7 @@ function closeModal(modalId) {
   modal.classList.add('modal-inactive');
 }
 
-/* Add a new book to myLibrary array and to the DOM when the form is submitted, and close modal */
-/* function addNewBook() {
-  addBookToLibrary(event);
-  const newBook = myLibrary[myLibrary.length - 1];
-  displayBook(
-    newBook.title,
-    newBook.author,
-    newBook.year,
-    newBook.sortEdition(),
-    newBook.publisher,
-    newBook.pages,
-    newBook.read,
-    newBook.sortName()
-  );
-  // closeModal('new-book-modal');
-} */
-
-/* Function to open New Book modal */
+/* 7. Function to open New Book modal */
 function openNewBookModal() {
   openModal('new-book-modal');
 
@@ -273,12 +272,12 @@ function openNewBookModal() {
 
   const formSubmitBtn = document.getElementById('form-submit');
   formSubmitBtn.textContent = 'Add Book';
-  formSubmitBtn.addEventListener('click', () => addBookToLibrary(event));
+  formSubmitBtn.addEventListener('click', addBookToLibrary);
 }
 
 addBtn.addEventListener('click', openNewBookModal);
 
-/* Edit book in library */
+/* 8. Edit book in library */
 function editBook(index, event) {
   const bookTitle = document.getElementById('edit-book-title').value;
   const bookAuthor = document.getElementById('edit-book-author').value;
@@ -286,7 +285,7 @@ function editBook(index, event) {
   const bookEdition = document.getElementById('edit-book-edition').value;
   const bookPublisher = document.getElementById('edit-book-publisher').value;
   const bookPages = document.getElementById('edit-book-pages').value;
-  const bookRead = document.getElementById('edit-book-read'.checked);
+  const bookRead = document.getElementById('edit-book-read');
 
   if (
     bookTitle !== '' &&
@@ -304,9 +303,9 @@ function editBook(index, event) {
     bookToUpdate.edition = bookEdition;
     bookToUpdate.publisher = bookPublisher;
     bookToUpdate.pages = bookPages;
-    bookToUpdate.read = bookRead;
+    bookToUpdate.read = bookRead.checked;
 
-    /* Edit the corresponding book coard in the DOM */
+    /* 8.1. Edit the corresponding book card in the DOM */
     const cardToUpdate = document.querySelector(`[data-index = "${index}"]`);
     const cardText = cardToUpdate.firstElementChild;
     const titleToUpdate = cardText.firstElementChild;
@@ -320,6 +319,8 @@ function editBook(index, event) {
     const citationPart1 = citationToUptade.firstChild;
     const citationPart2 = citationPart1.nextSibling;
     const citationPart3 = citationPart2.nextSibling;
+    const cardButtons = cardToUpdate.lastElementChild;
+    const readBtnToUpdate = cardButtons.firstElementChild;
 
     titleToUpdate.textContent = `${bookToUpdate.title}`;
     authorToUpdate.textContent = `Written by ${bookToUpdate.author}`;
@@ -334,11 +335,19 @@ function editBook(index, event) {
     citationPart3.textContent = `(${bookToUpdate.sortEdition()} Ed.). ${
       bookToUpdate.publisher
     }.`;
+    if (bookToUpdate.read) {
+      readBtnToUpdate.classList.replace('status-unread', 'status-read');
+      readBtnToUpdate.textContent = 'Read';
+    } else if (!bookToUpdate.read) {
+      readBtnToUpdate.classList.replace('status-read', 'status-unread');
+      readBtnToUpdate.textContent = 'Unread';
+    }
 
     closeModal('edit-book-modal');
   }
 }
 
+/* 9. Function to open Edit Book modal */
 function openEditBookModal(index) {
   openModal('edit-book-modal');
 
@@ -366,7 +375,7 @@ function openEditBookModal(index) {
   editSubmitBtn.addEventListener('click', () => editBook(index, event));
 }
 
-/* Delete a book from the library */
+/* 10. Delete a book from the library */
 function deleteBook(index) {
   const deletedBookFromLibrary = myLibrary.splice(Number(index), 1);
   const cards = document.getElementById('cards');
@@ -398,7 +407,7 @@ function openConfirmDeleteModal(index) {
   deleteBtn.addEventListener('click', () => deleteBook(index));
 }
 
-/* Display all books function */
+/* 11. Display all books function */
 myLibrary.forEach((book) =>
   displayBook(
     book.title,
