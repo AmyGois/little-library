@@ -123,12 +123,12 @@ function displayBook(
   bookCite.textContent = `Citation (APA7):`;
   cardText.appendChild(bookCite);
   const bookCitationTitle = document.createElement('em');
-  bookCitationTitle.textContent = `${title}`;
+  bookCitationTitle.textContent = `${title}. `;
   const bookCitation = document.createElement('p');
   bookCitation.textContent = `${sortName} (${year}). `;
   bookCitation.appendChild(bookCitationTitle);
   const bookCitationRest = document.createTextNode(
-    `. (${sortEdition} Ed.). ${publisher}.`
+    `(${sortEdition} Ed.). ${publisher}.`
   );
   bookCitation.appendChild(bookCitationRest);
   cardText.appendChild(bookCitation);
@@ -154,6 +154,9 @@ function displayBook(
   const editBtn = document.createElement('button');
   editBtn.classList.add('card-editBtn');
   editBtn.dataset.index = `${myLibrary.length - 1}`;
+  editBtn.addEventListener('click', () =>
+    openEditBookModal(editBtn.dataset.index)
+  );
   cardButtonsDiv.appendChild(editBtn);
   const editImg = document.createElement('img');
   editImg.setAttribute('src', './images/edit.svg');
@@ -202,6 +205,18 @@ function addBookToLibrary(event) {
       newBookRead
     );
     myLibrary.push(newBook);
+
+    displayBook(
+      newBook.title,
+      newBook.author,
+      newBook.year,
+      newBook.sortEdition(),
+      newBook.publisher,
+      newBook.pages,
+      newBook.read,
+      newBook.sortName()
+    );
+    closeModal('new-book-modal');
   }
 }
 
@@ -217,7 +232,7 @@ function closeModal(modalId) {
 }
 
 /* Add a new book to myLibrary array and to the DOM when the form is submitted, and close modal */
-function addNewBook() {
+/* function addNewBook() {
   addBookToLibrary(event);
   const newBook = myLibrary[myLibrary.length - 1];
   displayBook(
@@ -230,8 +245,8 @@ function addNewBook() {
     newBook.read,
     newBook.sortName()
   );
-  closeModal('new-book-modal');
-}
+  // closeModal('new-book-modal');
+} */
 
 /* Function to open New Book modal */
 function openNewBookModal() {
@@ -241,16 +256,118 @@ function openNewBookModal() {
   closeBookModalBtn.addEventListener('click', () =>
     closeModal('new-book-modal')
   );
+  const newBookTitle = document.getElementById('new-book-title');
+  const newBookAuthor = document.getElementById('new-book-author');
+  const newBookYear = document.getElementById('new-book-year');
+  const newBookEdition = document.getElementById('new-book-edition');
+  const newBookPublisher = document.getElementById('new-book-publisher');
+  const newBookPages = document.getElementById('new-book-pages');
+  const newBookRead = document.getElementById('new-book-read');
+  newBookTitle.value = '';
+  newBookAuthor.value = '';
+  newBookYear.value = '';
+  newBookEdition.value = '';
+  newBookPublisher.value = '';
+  newBookPages.value = '';
+  newBookRead.checked = false;
+
   const formSubmitBtn = document.getElementById('form-submit');
-  formSubmitBtn.addEventListener('click', addNewBook);
+  formSubmitBtn.textContent = 'Add Book';
+  formSubmitBtn.addEventListener('click', () => addBookToLibrary(event));
 }
 
 addBtn.addEventListener('click', openNewBookModal);
 
+/* Edit book in library */
+function editBook(index, event) {
+  const bookTitle = document.getElementById('edit-book-title').value;
+  const bookAuthor = document.getElementById('edit-book-author').value;
+  const bookYear = document.getElementById('edit-book-year').value;
+  const bookEdition = document.getElementById('edit-book-edition').value;
+  const bookPublisher = document.getElementById('edit-book-publisher').value;
+  const bookPages = document.getElementById('edit-book-pages').value;
+  const bookRead = document.getElementById('edit-book-read'.checked);
+
+  if (
+    bookTitle !== '' &&
+    bookAuthor !== '' &&
+    bookYear !== '' &&
+    bookEdition !== '' &&
+    bookPublisher !== ''
+  ) {
+    event.preventDefault();
+
+    const bookToUpdate = myLibrary[index];
+    bookToUpdate.title = bookTitle;
+    bookToUpdate.author = bookAuthor;
+    bookToUpdate.year = bookYear;
+    bookToUpdate.edition = bookEdition;
+    bookToUpdate.publisher = bookPublisher;
+    bookToUpdate.pages = bookPages;
+    bookToUpdate.read = bookRead;
+
+    /* Edit the corresponding book coard in the DOM */
+    const cardToUpdate = document.querySelector(`[data-index = "${index}"]`);
+    const cardText = cardToUpdate.firstElementChild;
+    const titleToUpdate = cardText.firstElementChild;
+    const authorToUpdate = titleToUpdate.nextElementSibling;
+    const yearToUpdate = authorToUpdate.nextElementSibling;
+    const editionToUpdate = yearToUpdate.nextElementSibling;
+    const publisherToUpdate = editionToUpdate.nextElementSibling;
+    const pagesToUpdate = publisherToUpdate.nextElementSibling;
+    const cite = pagesToUpdate.nextElementSibling;
+    const citationToUptade = cite.nextElementSibling;
+    const citationPart1 = citationToUptade.firstChild;
+    const citationPart2 = citationPart1.nextSibling;
+    const citationPart3 = citationPart2.nextSibling;
+
+    titleToUpdate.textContent = `${bookToUpdate.title}`;
+    authorToUpdate.textContent = `Written by ${bookToUpdate.author}`;
+    yearToUpdate.textContent = `Published in ${bookToUpdate.year}`;
+    editionToUpdate.textContent = `${bookToUpdate.sortEdition()} edition`;
+    publisherToUpdate.textContent = `Publisher: ${bookToUpdate.publisher}`;
+    pagesToUpdate.textContent = `Number of pages: ${bookToUpdate.pages}`;
+    citationPart1.textContent = `${bookToUpdate.sortName()} (${
+      bookToUpdate.year
+    }). `;
+    citationPart2.textContent = `${bookToUpdate.title}. `;
+    citationPart3.textContent = `(${bookToUpdate.sortEdition()} Ed.). ${
+      bookToUpdate.publisher
+    }.`;
+
+    closeModal('edit-book-modal');
+  }
+}
+
+function openEditBookModal(index) {
+  openModal('edit-book-modal');
+
+  const closeBookModalBtn = document.getElementById('edit-book-modal-close');
+  closeBookModalBtn.addEventListener('click', () =>
+    closeModal('edit-book-modal')
+  );
+  const bookToUpdate = myLibrary[index];
+  const bookTitle = document.getElementById('edit-book-title');
+  const bookAuthor = document.getElementById('edit-book-author');
+  const bookYear = document.getElementById('edit-book-year');
+  const bookEdition = document.getElementById('edit-book-edition');
+  const bookPublisher = document.getElementById('edit-book-publisher');
+  const bookPages = document.getElementById('edit-book-pages');
+  const bookRead = document.getElementById('edit-book-read');
+  bookTitle.value = bookToUpdate.title;
+  bookAuthor.value = bookToUpdate.author;
+  bookYear.value = bookToUpdate.year;
+  bookEdition.value = bookToUpdate.edition;
+  bookPublisher.value = bookToUpdate.publisher;
+  bookPages.value = bookToUpdate.pages;
+  bookRead.checked = bookToUpdate.read;
+  const editSubmitBtn = document.getElementById('edit-submit');
+  editSubmitBtn.textContent = 'Save Changes';
+  editSubmitBtn.addEventListener('click', () => editBook(index, event));
+}
+
 /* Delete a book from the library */
 function deleteBook(index) {
-  const cardToDelete = document.querySelector(`[data-index="${index}"]`);
-  cardToDelete.remove();
   const deletedBookFromLibrary = myLibrary.splice(Number(index), 1);
   const cards = document.getElementById('cards');
   cards.innerHTML = '';

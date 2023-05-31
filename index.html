@@ -85,7 +85,45 @@
                     <input type="checkbox" name="new-book-read" id="new-book-read">
                     <label for="new-book-read">I have already read this book</label>
                 </div>
-                <button class="form-submit" id="form-submit">Add Book</button>
+                <button class="form-submit" id="form-submit"></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="new-book-modal modal-inactive" id="edit-book-modal"> <!--Display: none-->
+        <div class="new-book-card">
+            <button class="new-book-modal-close" id="edit-book-modal-close">X</button>
+            <h2>New Book</h2>
+            <form action="#" class="new-book-form">
+                <div class="form-input">
+                    <label for="edit-book-title">Title:</label>
+                    <input type="text" name="edit-book-title" id="edit-book-title" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="edit-book-author">Author:</label>
+                    <input type="text" name="edit-book-author" id="edit-book-author" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="edit-book-year">Year of publication:</label>
+                    <input type="number" name="edit-book-year" id="edit-book-year" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="edit-book-edition">Edition:</label>
+                    <input type="number" name="edit-book-edition" id="edit-book-edition" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="edit-book-publisher">Publisher:</label>
+                    <input type="text" name="edit-book-publisher" id="edit-book-publisher" placeholder="" required>
+                </div>
+                <div class="form-input">
+                    <label for="edit-book-pages">Number of pages (optional):</label>
+                    <input type="number" name="edit-book-pages" id="edit-book-pages" placeholder="">
+                </div>
+                <div class="form-input-checkbox">
+                    <input type="checkbox" name="edit-book-read" id="edit-book-read">
+                    <label for="edit-book-read">I have already read this book</label>
+                </div>
+                <button class="form-submit" id="edit-submit"></button>
             </form>
         </div>
     </div>
