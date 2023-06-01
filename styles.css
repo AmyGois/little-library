@@ -39,7 +39,7 @@ Contents:
 2. Page layout & typography
 ********************************************/
 
-body, button, input {
+body, button, input, select {
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -72,6 +72,17 @@ h1 {
     justify-content: space-between;
     align-items: center;
     background-color: var(--primary-colour);
+}
+
+.search-and-add label {
+    color: var(--light-font-colour);
+}
+
+.search-and-add select {
+    padding: 0.3rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    border: none;
 }
 
 .addBtn {

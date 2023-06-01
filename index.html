@@ -15,11 +15,21 @@
 <body>
     <header>
         <h1>My Library</h1>
+        <p>Organise your books and get your citations in order</p>
     </header>
 
     <main>
         <div class="search-and-add">
-            <div>search bar and filters here</div>
+            <div>
+                <label for="ordered-books">Organise books by:</label>
+                <select name="ordered-books" id="ordered-books">
+                    <option value="addition" selected>Date added</option>
+                    <option value="title">Title (A-Z)</option>
+                    <option value="author">Author (A-Z)</option>
+                    <option value="year">Year of publication</option>
+                    <option value="pages">Number of pages</option>
+                </select>
+            </div>
 
             <button class="addBtn" id="addBtn">+ Add Book</button>
         </div>

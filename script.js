@@ -18,6 +18,7 @@
 /* 0. Global variables */
 const myLibrary = [];
 const addBtn = document.getElementById('addBtn');
+const orderedBooks = document.getElementById('ordered-books');
 
 /* 1. Book object constructor and prototype */
 function Book(title, author, year, edition, publisher, pages, read) {
@@ -420,3 +421,110 @@ myLibrary.forEach((book) =>
     book.sortName()
   )
 );
+
+/* 12. */
+
+function sortBooks() {
+  const cards = document.getElementById('cards');
+  cards.innerHTML = '';
+  if (orderedBooks.value === 'title') {
+    const sortedByTitle = myLibrary.slice().sort((book1, book2) => {
+      const title1 = book1.title.toLowerCase();
+      const title2 = book2.title.toLowerCase();
+      if (title1 < title2) {
+        return -1;
+      }
+      if (title1 > title2) {
+        return 1;
+      }
+      return 0;
+    });
+    sortedByTitle.forEach((book) =>
+      displayBook(
+        book.title,
+        book.author,
+        book.year,
+        book.sortEdition(),
+        book.publisher,
+        book.pages,
+        book.read,
+        book.sortName()
+      )
+    );
+  } else if (orderedBooks.value === 'author') {
+    const sortedByAuthor = myLibrary.slice().sort((book1, book2) => {
+      const author1 = book1.author.toLowerCase();
+      const author2 = book2.author.toLowerCase();
+      if (author1 < author2) {
+        return -1;
+      }
+      if (author1 > author2) {
+        return 1;
+      }
+      return 0;
+    });
+    sortedByAuthor.forEach((book) =>
+      displayBook(
+        book.title,
+        book.author,
+        book.year,
+        book.sortEdition(),
+        book.publisher,
+        book.pages,
+        book.read,
+        book.sortName()
+      )
+    );
+  } else if (orderedBooks.value === 'year') {
+    const sortedByYear = myLibrary.slice().sort((book1, book2) => {
+      const year1 = Number(book1.year);
+      const year2 = Number(book2.year);
+      return year1 - year2;
+    });
+    sortedByYear.forEach((book) =>
+      displayBook(
+        book.title,
+        book.author,
+        book.year,
+        book.sortEdition(),
+        book.publisher,
+        book.pages,
+        book.read,
+        book.sortName()
+      )
+    );
+  } else if (orderedBooks.value === 'pages') {
+    const sortedByPages = myLibrary.slice().sort((book1, book2) => {
+      const pages1 = Number(book1.pages);
+      const pages2 = Number(book2.pages);
+      return pages1 - pages2;
+    });
+    sortedByPages.forEach((book) =>
+      displayBook(
+        book.title,
+        book.author,
+        book.year,
+        book.sortEdition(),
+        book.publisher,
+        book.pages,
+        book.read,
+        book.sortName()
+      )
+    );
+  } else {
+    myLibrary.forEach((book) =>
+      displayBook(
+        book.title,
+        book.author,
+        book.year,
+        book.sortEdition(),
+        book.publisher,
+        book.pages,
+        book.read,
+        book.sortName()
+      )
+    );
+  }
+}
+
+orderedBooks.addEventListener('change', sortBooks);
