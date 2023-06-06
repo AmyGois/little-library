@@ -277,7 +277,6 @@ function openNewBookModal() {
   newBookRead.checked = false;
 
   const formSubmitBtn = document.getElementById('form-submit');
-  formSubmitBtn.textContent = 'Add Book';
   formSubmitBtn.addEventListener('click', addBookToLibrary);
 }
 
@@ -379,7 +378,6 @@ function openEditBookModal(indexToEdit) {
   bookPages.value = bookToUpdate.pages;
   bookRead.checked = bookToUpdate.read;
   const editSubmitBtn = document.getElementById('edit-submit');
-  editSubmitBtn.textContent = 'Save Changes';
   function removeListener() {
     editSubmitBtn.removeEventListener('click', editBookFunction);
   }
