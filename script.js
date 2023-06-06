@@ -13,7 +13,8 @@
     8.1. Edit the corresponding book card in the DOM
   9. Function to open Edit Book modal
   10. Delete a book from the library
-  11. Display all books function */
+  11. Display all books function
+  12. Sort books by title, author, year, etc. */
 
 /* 0. Global variables */
 const myLibrary = [];
@@ -100,6 +101,7 @@ function changeReadStatus() {
 
 /* 4. Display book in DOM */
 function displayBook(
+  arrayIndexOf,
   title,
   author,
   year,
@@ -111,7 +113,7 @@ function displayBook(
 ) {
   const cards = document.getElementById('cards');
   const card = document.createElement('div');
-  card.dataset.index = `${myLibrary.length - 1}`;
+  card.dataset.index = `${arrayIndexOf}`;
   card.classList.add('card');
   const cardText = document.createElement('div');
   cardText.classList.add('card-text');
@@ -164,16 +166,17 @@ function displayBook(
     cardReadButton.textContent = 'Unread';
   }
   cardReadButton.addEventListener('click', changeReadStatus);
-  cardReadButton.dataset.index = `${myLibrary.length - 1}`;
+  cardReadButton.dataset.index = `${arrayIndexOf}`;
   cardButtons.appendChild(cardReadButton);
   const cardButtonsDiv = document.createElement('div');
   cardButtons.appendChild(cardButtonsDiv);
   const editBtn = document.createElement('button');
   editBtn.classList.add('card-editBtn');
-  editBtn.dataset.index = `${myLibrary.length - 1}`;
-  editBtn.addEventListener('click', () =>
-    openEditBookModal(editBtn.dataset.index)
-  );
+  editBtn.dataset.index = `${arrayIndexOf}`;
+  function openEditBookModalFunction() {
+    openEditBookModal(editBtn.dataset.index);
+  }
+  editBtn.addEventListener('click', openEditBookModalFunction);
   cardButtonsDiv.appendChild(editBtn);
   const editImg = document.createElement('img');
   editImg.setAttribute('src', './images/edit.svg');
@@ -181,10 +184,11 @@ function displayBook(
   editBtn.appendChild(editImg);
   const deleteBtn = document.createElement('button');
   deleteBtn.classList.add('card-deleteBtn');
-  deleteBtn.dataset.index = `${myLibrary.length - 1}`;
-  deleteBtn.addEventListener('click', () =>
-    openConfirmDeleteModal(Number(deleteBtn.dataset.index))
-  );
+  deleteBtn.dataset.index = `${arrayIndexOf}`;
+  function openConfirmDeleteModalFunction() {
+    openConfirmDeleteModal(Number(deleteBtn.dataset.index));
+  }
+  deleteBtn.addEventListener('click', openConfirmDeleteModalFunction);
   cardButtonsDiv.appendChild(deleteBtn);
   const deleteImg = document.createElement('img');
   deleteImg.setAttribute('src', './images/delete.svg');
@@ -224,6 +228,7 @@ function addBookToLibrary(event) {
     myLibrary.push(newBook);
 
     displayBook(
+      myLibrary.indexOf(newBook),
       newBook.title,
       newBook.author,
       newBook.year,
@@ -279,7 +284,7 @@ function openNewBookModal() {
 addBtn.addEventListener('click', openNewBookModal);
 
 /* 8. Edit book in library */
-function editBook(index, event) {
+function editBook(indexToEdit, event) {
   const bookTitle = document.getElementById('edit-book-title').value;
   const bookAuthor = document.getElementById('edit-book-author').value;
   const bookYear = document.getElementById('edit-book-year').value;
@@ -297,7 +302,7 @@ function editBook(index, event) {
   ) {
     event.preventDefault();
 
-    const bookToUpdate = myLibrary[index];
+    const bookToUpdate = myLibrary[indexToEdit];
     bookToUpdate.title = bookTitle;
     bookToUpdate.author = bookAuthor;
     bookToUpdate.year = bookYear;
@@ -307,7 +312,9 @@ function editBook(index, event) {
     bookToUpdate.read = bookRead.checked;
 
     /* 8.1. Edit the corresponding book card in the DOM */
-    const cardToUpdate = document.querySelector(`[data-index = "${index}"]`);
+    const cardToUpdate = document.querySelector(
+      `[data-index = "${indexToEdit}"]`
+    );
     const cardText = cardToUpdate.firstElementChild;
     const titleToUpdate = cardText.firstElementChild;
     const authorToUpdate = titleToUpdate.nextElementSibling;
@@ -349,14 +356,14 @@ function editBook(index, event) {
 }
 
 /* 9. Function to open Edit Book modal */
-function openEditBookModal(index) {
+function openEditBookModal(indexToEdit) {
   openModal('edit-book-modal');
 
   const closeBookModalBtn = document.getElementById('edit-book-modal-close');
   closeBookModalBtn.addEventListener('click', () =>
     closeModal('edit-book-modal')
   );
-  const bookToUpdate = myLibrary[index];
+  const bookToUpdate = myLibrary[indexToEdit];
   const bookTitle = document.getElementById('edit-book-title');
   const bookAuthor = document.getElementById('edit-book-author');
   const bookYear = document.getElementById('edit-book-year');
@@ -373,16 +380,24 @@ function openEditBookModal(index) {
   bookRead.checked = bookToUpdate.read;
   const editSubmitBtn = document.getElementById('edit-submit');
   editSubmitBtn.textContent = 'Save Changes';
-  editSubmitBtn.addEventListener('click', () => editBook(index, event));
+  function removeListener() {
+    editSubmitBtn.removeEventListener('click', editBookFunction);
+  }
+  function editBookFunction() {
+    editBook(indexToEdit, event);
+    removeListener();
+  }
+  editSubmitBtn.addEventListener('click', editBookFunction);
 }
 
 /* 10. Delete a book from the library */
-function deleteBook(index) {
-  const deletedBookFromLibrary = myLibrary.splice(Number(index), 1);
+function deleteBook(indexToDelete) {
+  const deletedBookFromLibrary = myLibrary.splice(Number(indexToDelete), 1);
   const cards = document.getElementById('cards');
   cards.innerHTML = '';
   myLibrary.forEach((book) =>
     displayBook(
+      myLibrary.indexOf(book),
       book.title,
       book.author,
       book.year,
@@ -396,21 +411,29 @@ function deleteBook(index) {
   closeModal('confirm-delete-modal');
 }
 
-function openConfirmDeleteModal(index) {
+function openConfirmDeleteModal(indexToDelete) {
   openModal('confirm-delete-modal');
 
   const confirmDeleteText = document.getElementById('confirm-delete-text');
-  const bookName = myLibrary[index].title;
+  const bookName = myLibrary[indexToDelete].title;
   confirmDeleteText.textContent = `Are you sure you want to delete ${bookName} from your library?`;
   const cancelBtn = document.getElementById('cancelBtn');
   cancelBtn.addEventListener('click', () => closeModal('confirm-delete-modal'));
   const deleteBtn = document.getElementById('deleteBtn');
-  deleteBtn.addEventListener('click', () => deleteBook(index));
+  function removeListener() {
+    deleteBtn.addEventListener('click', deleteBookFunction);
+  }
+  function deleteBookFunction() {
+    deleteBook(indexToDelete);
+    removeListener();
+  }
+  deleteBtn.addEventListener('click', deleteBookFunction);
 }
 
 /* 11. Display all books function */
 myLibrary.forEach((book) =>
   displayBook(
+    myLibrary.indexOf(book),
     book.title,
     book.author,
     book.year,
@@ -422,7 +445,7 @@ myLibrary.forEach((book) =>
   )
 );
 
-/* 12. */
+/* 12. Sort books by title, author, year, etc. */
 
 function sortBooks() {
   const cards = document.getElementById('cards');
@@ -441,6 +464,7 @@ function sortBooks() {
     });
     sortedByTitle.forEach((book) =>
       displayBook(
+        myLibrary.indexOf(book),
         book.title,
         book.author,
         book.year,
@@ -465,6 +489,7 @@ function sortBooks() {
     });
     sortedByAuthor.forEach((book) =>
       displayBook(
+        myLibrary.indexOf(book),
         book.title,
         book.author,
         book.year,
@@ -483,6 +508,7 @@ function sortBooks() {
     });
     sortedByYear.forEach((book) =>
       displayBook(
+        myLibrary.indexOf(book),
         book.title,
         book.author,
         book.year,
@@ -501,6 +527,7 @@ function sortBooks() {
     });
     sortedByPages.forEach((book) =>
       displayBook(
+        myLibrary.indexOf(book),
         book.title,
         book.author,
         book.year,
@@ -514,6 +541,7 @@ function sortBooks() {
   } else {
     myLibrary.forEach((book) =>
       displayBook(
+        myLibrary.indexOf(book),
         book.title,
         book.author,
         book.year,
