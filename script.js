@@ -22,7 +22,63 @@ const addBtn = document.getElementById('addBtn');
 const orderedBooks = document.getElementById('ordered-books');
 
 /* 1. Book object constructor and prototype */
-function Book(title, author, year, edition, publisher, pages, read) {
+class Book {
+  constructor(title, author, year, edition, publisher, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.year = year;
+    this.edition = edition;
+    this.publisher = publisher;
+    this.pages = pages;
+    this.read = read;
+  }
+
+  sortName() {
+    const splitName = this.author.split(' ');
+    const lastName = splitName[splitName.length - 1];
+    let otherNames = '';
+    let sortedName = '';
+    if (splitName.length > 1) {
+      for (let i = 0; i < splitName.length - 1; i++) {
+        otherNames += ` ${splitName[i].substr(0, 1)}.`;
+      }
+    }
+    if (otherNames) {
+      sortedName = `${lastName},${otherNames}`;
+    } else {
+      sortedName = lastName;
+    }
+    return sortedName;
+  }
+
+  sortEdition() {
+    const lastNumber = this.edition.substr(-1, 1);
+    let sortedEdition = '';
+    if (
+      this.edition === '11' ||
+      this.edition === '12' ||
+      this.edition === '13'
+    ) {
+      sortedEdition = `${this.edition}th`;
+    } else {
+      switch (lastNumber) {
+        case '1':
+          sortedEdition = `${this.edition}st`;
+          break;
+        case '2':
+          sortedEdition = `${this.edition}nd`;
+          break;
+        case '3':
+          sortedEdition = `${this.edition}rd`;
+          break;
+        default:
+          sortedEdition = `${this.edition}th`;
+      }
+    }
+    return sortedEdition;
+  }
+}
+/* function Book(title, author, year, edition, publisher, pages, read) {
   this.title = title;
   this.author = author;
   this.year = year;
@@ -71,7 +127,7 @@ Book.prototype.sortEdition = function () {
     }
   }
   return sortedEdition;
-};
+}; */
 
 /* 2. Example book */
 const exampleBook = new Book(
